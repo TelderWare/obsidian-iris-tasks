@@ -44,9 +44,9 @@ export class TaskView extends ItemView {
 
     const container = this.contentEl;
     container.empty();
-    container.addClass("nav-files-container", "iris-tasks");
+    container.addClass("iris-tasks");
 
-    this.bodyEl = container.createDiv({ cls: "tree-item-children" });
+    this.bodyEl = container.createDiv({ cls: "iris-hp-list-container" });
   }
 
   private render(): void {
@@ -57,12 +57,14 @@ export class TaskView extends ItemView {
   private renderBody(): void {
     this.bodyEl.empty();
 
+    this.bodyEl.createEl("h6", { text: "Tasks", cls: "iris-hp-widget-title" });
+
     let tasks = parseTasks(this.app, this.plugin.settings.folders)
       .filter((t) => t.status !== "archived");
     tasks = sortTasks(tasks, this.sortKey);
 
     if (tasks.length === 0) {
-      const empty = this.bodyEl.createDiv({ cls: "pane-empty" });
+      const empty = this.bodyEl.createDiv({ cls: "iris-hp-empty" });
       empty.setText("No tasks found");
       return;
     }
@@ -73,9 +75,9 @@ export class TaskView extends ItemView {
   }
 
   private renderItem(parent: HTMLElement, task: Task): void {
-    const item = parent.createDiv({ cls: "tree-item" });
+    const item = parent.createDiv({ cls: "iris-hp-list-item" });
     const self = item.createDiv({
-      cls: `tree-item-self is-clickable ${task.status === "completed" ? "is-completed" : ""}`,
+      cls: `iris-hp-list-item-self is-clickable ${task.status === "completed" ? "is-completed" : ""}`,
     });
 
     const checkbox = self.createEl("input", { cls: "task-list-item-checkbox", type: "checkbox" });
@@ -85,13 +87,12 @@ export class TaskView extends ItemView {
       this.toggleStatus(task);
     });
 
-    const inner = self.createDiv({ cls: "tree-item-inner" });
+    const inner = self.createDiv({ cls: "iris-hp-list-item-inner" });
     inner.setText(task.title);
 
     if (task.dueDate) {
-      const flair = self.createDiv({ cls: "tree-item-flair-outer" });
-      const span = flair.createSpan({ cls: "tree-item-flair" });
-      span.setText(formatDueDate(task.dueDate));
+      const flair = self.createDiv({ cls: "iris-hp-list-item-flair" });
+      flair.setText(formatDueDate(task.dueDate));
     }
 
     self.addEventListener("click", () => {
