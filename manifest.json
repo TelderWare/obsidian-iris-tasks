@@ -1,0 +1,9 @@
+{
+  "id": "iris-tasks",
+  "name": "Iris Tasks",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Full-page task board aggregating tasks and assignments with filtering, sorting, and rich metadata.",
+  "author": "mgodd",
+  "isDesktopOnly": false
+}

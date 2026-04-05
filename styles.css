@@ -1,0 +1,39 @@
+.iris-tasks .tree-item-children {
+  border-left: none;
+  padding-left: 0;
+}
+
+.iris-tasks .tree-item-self {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 0;
+  margin-left: 0;
+}
+
+.iris-tasks .tree-item-self .task-list-item-checkbox {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.iris-tasks .tree-item-self .tree-item-inner {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iris-tasks .tree-item-self .tree-item-flair-outer {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.iris-tasks .tree-item-self.is-completed .tree-item-inner {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.iris-tasks .tree-item-self.is-completed {
+  opacity: 0.5;
+}
