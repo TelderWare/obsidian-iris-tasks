@@ -3,10 +3,12 @@ import type IrisTasksPlugin from "./main";
 
 export interface IrisTasksSettings {
   folders: string[];
+  showCompleted: boolean;
 }
 
 export const DEFAULT_SETTINGS: IrisTasksSettings = {
   folders: ["Tasks", "Iris/Tabula/Assignments"],
+  showCompleted: false,
 };
 
 export class IrisTasksSettingTab extends PluginSettingTab {

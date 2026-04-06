@@ -46,6 +46,21 @@ export class TaskView extends ItemView {
     container.empty();
     container.addClass("iris-tasks");
 
+    const header = container.createDiv({ cls: "iris-tasks-header" });
+    header.createEl("h6", { text: "Tasks", cls: "iris-hp-widget-title" });
+
+    const toggle = header.createEl("button", {
+      cls: "iris-tasks-toggle clickable-icon",
+      attr: { "aria-label": "Toggle completed tasks" },
+    });
+    setIcon(toggle, this.plugin.settings.showCompleted ? "eye" : "eye-off");
+    toggle.addEventListener("click", async () => {
+      this.plugin.settings.showCompleted = !this.plugin.settings.showCompleted;
+      await this.plugin.saveSettings();
+      setIcon(toggle, this.plugin.settings.showCompleted ? "eye" : "eye-off");
+      this.renderBody();
+    });
+
     this.bodyEl = container.createDiv({ cls: "iris-hp-list-container" });
   }
 
@@ -57,10 +72,11 @@ export class TaskView extends ItemView {
   private renderBody(): void {
     this.bodyEl.empty();
 
-    this.bodyEl.createEl("h6", { text: "Tasks", cls: "iris-hp-widget-title" });
-
     let tasks = parseTasks(this.app, this.plugin.settings.folders)
       .filter((t) => t.status !== "archived");
+    if (!this.plugin.settings.showCompleted) {
+      tasks = tasks.filter((t) => t.status !== "completed");
+    }
     tasks = sortTasks(tasks, this.sortKey);
 
     if (tasks.length === 0) {
