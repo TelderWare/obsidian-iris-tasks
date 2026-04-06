@@ -1,6 +1,6 @@
 import { ItemView, Menu, WorkspaceLeaf, setIcon } from "obsidian";
 import type IrisTasksPlugin from "./main";
-import { Task, SortKey, parseTasks, sortTasks } from "./task-parser";
+import { Task, SortKey, parseTasks, sortTasks, isSpecialDueDate } from "./task-parser";
 
 export const VIEW_TYPE_TASKS = "iris-tasks-view";
 
@@ -144,6 +144,8 @@ export class TaskView extends ItemView {
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function formatDueDate(date: string): string {
+  if (isSpecialDueDate(date)) return date.toLowerCase();
+
   const parts = date.split("-");
   const target = new Date(+parts[0], +parts[1] - 1, +parts[2]);
   const now = new Date();
