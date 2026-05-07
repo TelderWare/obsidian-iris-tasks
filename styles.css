@@ -9,18 +9,65 @@
   justify-content: space-between;
 }
 
-.iris-tasks-toggle {
+.iris-tasks-status {
+  display: inline-flex;
+  align-items: center;
   color: var(--text-muted);
+  margin-left: auto;
+  margin-right: 0.4em;
+}
+
+.iris-tasks-status:empty,
+.iris-tasks-status[aria-hidden="true"] {
   display: none;
 }
 
-.iris-hp-edit-mode .iris-tasks-toggle {
-  display: flex;
+.iris-tasks-status .svg-icon {
+  width: 14px;
+  height: 14px;
 }
+
+.iris-tasks-status-warn {
+  color: var(--text-warning, var(--text-accent));
+}
+
+.iris-tasks-status-clickable {
+  cursor: pointer;
+}
+
+.iris-tasks-status-clickable:hover {
+  opacity: 0.75;
+}
+
+.iris-tasks-status-busy .svg-icon {
+  animation: iris-tasks-spin 1s linear infinite;
+}
+
+@keyframes iris-tasks-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .iris-tasks .iris-hp-list-item-self .task-list-item-checkbox {
   flex-shrink: 0;
   margin: 0;
+}
+
+.iris-tasks-auto-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  color: var(--text-muted);
+}
+
+.iris-tasks-auto-icon .svg-icon {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
 }
 
 .iris-tasks .iris-hp-list-item-self.is-completed .iris-hp-list-item-inner {
@@ -31,3 +78,392 @@
 .iris-tasks .iris-hp-list-item-self.is-completed {
   opacity: 0.5;
 }
+
+.iris-tasks .iris-hp-list-item-self.is-archived {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* Title is plain text — navigation moved to the dedicated nav icon, and
+   "set as current task" moved to the right-click menu. Class name is
+   retained for layout / patchRowElement selectors. */
+.iris-tasks-title-link {
+  cursor: default;
+}
+
+.iris-tasks-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.3em;
+  flex-shrink: 0;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 80ms ease-in-out, color 80ms ease-in-out;
+}
+
+.iris-tasks-nav-icon:hover {
+  opacity: 1;
+  color: var(--text-normal);
+}
+
+.iris-tasks-nav-icon .svg-icon {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+}
+
+.iris-tasks-chain-sep {
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.iris-tasks-wait-segment {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.iris-tasks-wait-segment:hover {
+  text-decoration: none;
+}
+
+.iris-tasks .iris-hp-list-item,
+.iris-tasks .iris-hp-list-item-self,
+.iris-tasks .iris-hp-list-item-inner {
+  overflow: visible;
+}
+
+/* The shared .iris-hp-list-item-inner inherits Obsidian's tall line-height
+   while using a smaller font, which puts the glyph ink in the upper half of
+   its line-box — so `align-items: center` on the parent visually drifts the
+   text above the checkbox. Make the inner a flex row so its contents are
+   centered against its own box, independent of line-height. */
+.iris-tasks .iris-hp-list-item-inner {
+  display: flex;
+  align-items: center;
+}
+
+.iris-tasks-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 80ms ease-in-out;
+  position: absolute;
+  left: -10px;
+}
+
+.iris-tasks .iris-hp-list-item-self {
+  position: relative;
+}
+
+.iris-tasks-drag-handle svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--text-muted);
+}
+
+.iris-tasks .iris-hp-list-item:hover .iris-tasks-drag-handle {
+  opacity: 0.6;
+}
+
+.iris-tasks-drag-handle:active {
+  cursor: grabbing;
+}
+
+.iris-tasks .iris-hp-list-item.is-dragging {
+  opacity: 0.4;
+}
+
+.iris-tasks .iris-hp-list-item.is-drop-above {
+  box-shadow: inset 0 2px 0 0 var(--interactive-accent);
+}
+
+.iris-tasks .iris-hp-list-item.is-drop-below {
+  box-shadow: inset 0 -2px 0 0 var(--interactive-accent);
+}
+
+.iris-tasks-connector {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 0.3em;
+  vertical-align: middle;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.iris-tasks-connector svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+.iris-tasks-connector path {
+  fill: none;
+  stroke: var(--text-normal);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iris-tasks-connector path.iris-tasks-connector-arrow {
+  fill: var(--text-normal);
+  stroke: var(--text-normal);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  shape-rendering: crispEdges;
+}
+
+.iris-tasks-ghost {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.iris-tasks .iris-hp-list-item.iris-hp-enter {
+  animation: iris-hp-fade-in 180ms ease-out;
+}
+
+.iris-tasks-create-entry.is-editing .iris-hp-list-item-self {
+  cursor: text;
+  background: var(--background-modifier-form-field);
+}
+
+.iris-tasks-create-entry.is-editing .iris-hp-list-item-self:hover {
+  background: var(--background-modifier-form-field);
+}
+
+.iris-tasks-create-entry-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  font: inherit;
+  color: var(--text-normal);
+}
+
+@keyframes iris-hp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.iris-tasks-mail-modal .iris-tasks-mail-subject {
+  font-weight: 600;
+  font-size: var(--font-ui-medium);
+  margin-top: 0.5em;
+}
+
+.iris-tasks-mail-modal .iris-tasks-mail-meta {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-bottom: 0.75em;
+}
+
+.iris-tasks-mail-modal .iris-tasks-mail-body {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.iris-tasks-mail-modal .iris-tasks-mail-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.iris-tasks-new-prereq-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.iris-tasks-new-prereq-field label {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  min-width: 3em;
+}
+
+.iris-tasks-new-prereq-field input {
+  flex: 1;
+}
+
+.iris-tasks-new-prereq-submit {
+  margin-top: 0.5em;
+}
+
+.iris-tasks-series-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.4em;
+  padding: 0 0.35em;
+  font-size: var(--font-ui-smaller);
+  color: var(--text-muted);
+  background: var(--background-modifier-hover);
+  border-radius: 4px;
+  line-height: 1.4;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.iris-tasks-tr-lock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.3em;
+  flex-shrink: 0;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  color: var(--text-muted);
+}
+
+.iris-tasks-tr-lock-pending {
+  cursor: pointer;
+}
+
+.iris-tasks-tr-lock .svg-icon {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+}
+
+.iris-tasks-tr-lock-complete {
+  color: var(--text-muted);
+}
+
+.iris-tasks-wc-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.4em;
+  padding: 0 0.35em;
+  font-size: var(--font-ui-smaller);
+  color: var(--text-muted);
+  background: var(--background-modifier-hover);
+  border-radius: 4px;
+  line-height: 1.4;
+  user-select: none;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.iris-tasks-wc-done {
+  color: var(--color-green);
+}
+
+.iris-tasks-series-modal.iris-tasks {
+  padding: 0.5em 0;
+  overflow: visible;
+}
+
+.iris-tasks-series-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.6em 0.4em;
+}
+
+.iris-tasks-series-toolbar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--font-ui-smaller);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.iris-tasks-series-toolbar-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+/* ── Current-task status bar ── */
+.iris-tasks-current-task-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  max-width: 300px;
+  min-width: 0;
+}
+
+.iris-tasks-current-task-bar:hover {
+  color: var(--text-normal);
+}
+
+.iris-tasks-current-task-prefix {
+  flex-shrink: 0;
+}
+
+.iris-tasks-current-task-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Current-task checkbox highlight ── */
+.iris-tasks .iris-hp-list-item-self.is-current-task .task-list-item-checkbox {
+  border-color: var(--interactive-accent);
+}
+
+/* ── Current-task title accent colour ── */
+.iris-tasks .iris-hp-list-item-self.is-current-task .iris-tasks-title-link {
+  color: var(--interactive-accent);
+}
+
+/* ── Multi-selection highlight (ctrl/shift-click) ── */
+.iris-tasks .iris-hp-list-item-self.is-selected {
+  background: var(--background-modifier-hover);
+  box-shadow: inset 2px 0 0 0 var(--interactive-accent);
+}
+
+/* List body is focusable for Esc / Ctrl+A — hide the default outline. */
+.iris-tasks .iris-hp-list-container:focus,
+.iris-tasks .iris-hp-list-container:focus-visible {
+  outline: none;
+}
+
+/* Undo button inside a Notice. */
+.iris-tasks-notice-undo {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  margin-left: 0.6em;
+  padding: 1px 8px;
+}
+
+.iris-tasks-notice-undo:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* Inline rename input — sits inside the title span on dblclick. */
+.iris-tasks-inline-rename {
+  background: var(--background-modifier-form-field);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 3px;
+  color: var(--text-normal);
+  font: inherit;
+  outline: none;
+  padding: 0 4px;
+  margin: -1px 0;
+  width: 100%;
+  min-width: 8em;
+}
+

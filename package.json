@@ -11,5 +11,6 @@
     "esbuild": "^0.21.0",
     "obsidian": "latest",
     "typescript": "^5.4.0"
-  }
+  },
+  "dependencies": {}
 }
